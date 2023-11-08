@@ -6,7 +6,7 @@
 /*   By: nrontey <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:29:51 by nrontey           #+#    #+#             */
-/*   Updated: 2023/11/03 10:29:58 by nrontey          ###   ########.fr       */
+/*   Updated: 2023/11/08 18:38:31 by nrontey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,17 @@ static int	ft_wordlen(char const *s, char c, int start)
 	return (count);
 }
 
-static char	*ft_getword(char const *s, char c, int start)
+static void	ft_free_all(char **arr, int j)
+{
+	while (j)
+	{
+		free(arr[j]);
+		j--;
+	}
+	free(arr);
+}
+
+static char	*ft_getword(char const *s, char c, int start, char **arr)
 {
 	char	*word;
 	int		len;
@@ -61,7 +71,7 @@ static char	*ft_getword(char const *s, char c, int start)
 	len = ft_wordlen(s, c, start);
 	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
-		return (NULL);
+		ft_free_all(arr, ft_wordcount(s, c));
 	while (s[i] != c && s[i] != '\0')
 		word[j++] = s[i++];
 	word[j] = '\0';
@@ -86,7 +96,7 @@ char	**ft_split(char const *s, char c)
 		while (s[i] == c && s[i] != '\0')
 			i++;
 		if (s[i] != '\0')
-			arr[++j] = ft_getword(s, c, i++);
+			arr[++j] = ft_getword(s, c, i++, arr);
 		while (s[i] != c && s[i] != '\0')
 			i++;
 	}

@@ -22,6 +22,8 @@ SRC =                 $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ_PATH =             .
 OBJ_NAME =             $(SRC_NAME:.c=.o)
 OBJ =                 $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+BONUS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
+BONUS_OBJ = $(BONUS:.c=.o)
 
 all: $(NAME)
 
@@ -32,9 +34,13 @@ $(NAME):$(OBJ)
 
 %.o:	%.c $(HEA)
 	@$(CC) $(CFLAGS) -c $< -o $@ 
+	
+bonus: $(OBJ) $(BONUS_OBJ)
+	ar rcs $(NAME) $(OBJ) $(BONUS_OBJ)
+	@echo "Libft compilation complete with bonus."
 
 clean:
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ) $(BONUS_OBJ)
 	@echo "Object files deleted." 
 
 fclean:	clean
